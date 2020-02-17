@@ -72,12 +72,6 @@ class SaveFilesIntoDatabase:
     def __init__(self, path):
         self.path = path
 
-    #     extension = 'csv'
-    #     all_filenames = [i for i in glob.glob('*.{}'.format(extension))]
-    #     combined = pd.concat([pd.read_csv(f) for f in all_filenames])
-    #     result = combined.to_csv('combined.csv', index=False, encoding='utf-8-sig')
-    #     return result
-
     def read_from_csv(self):  # this object is appending data from csv files (from ompt) to mongodb
         i = 1
         new_list = {}
@@ -115,6 +109,13 @@ if __name__ == '__main__':
     table_from_ompt = directory.read_from_csv()
     print(table_from_ompt)
     not_in_sap = [item for item in table_from_ompt if item not in table_from_sap]
+    in_sap = [item for item in table_from_ompt if item in table_from_sap]
+    print(len(not_in_sap))
+    print(len(table_from_ompt))
+    print(len(table_from_sap))
+    print(in_sap)
     print(not_in_sap)
 
-    # print(remove_duplicates())
+
+
+
