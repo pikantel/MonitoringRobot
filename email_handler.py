@@ -13,7 +13,6 @@ class EmailCreation:
 
         Msg = o.CreateItem(0)
         Msg.To = self.recipient
-        # Msg.CC = "patryk.rozenek2@unilever.com"
 
         Msg.Subject = "Credentials need to be checked"
         Msg.Body = f"Login {self.log} or password {self.pas} are incorrect. \n" \
