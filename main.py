@@ -1,4 +1,4 @@
-from prepare_data import ClearPath
+from prepare_data import clear_path
 from search_engine import PickLogin, LogError, Login
 from selenium.common.exceptions import NoSuchElementException
 from email_handler import EmailCreation
@@ -12,7 +12,7 @@ if __name__ == '__main__':
     site = 'https://portal1.live.omprompt.com/ompcrm/view/login.csp'
     login_path = r"C:\python\web_scrap\ompt_partners.json"
     destination = r"C:\Temp\output\OmptData"
-    ClearPath(destination).clear_path()
+    clear_path(destination)
     login = Login(chrome_path, driver_path, site, destination)
     logs = PickLogin(login_path).download_logins()
     for x in logs:

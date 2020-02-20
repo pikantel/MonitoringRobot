@@ -4,7 +4,7 @@ from win32api import *
 from win32com.client import *
 import datetime
 import json
-from prepare_data import ClearPath
+from prepare_data import clear_path
 
 #-Includes--------------------------------------------------------------
 from sys import *
@@ -120,7 +120,7 @@ class SapDownload:
         session.findById("wnd[1]/usr/ctxtDY_PATH").setFocus()
         session.findById("wnd[1]/usr/ctxtDY_PATH").caretPosition = 0
         session.findById("wnd[1]/usr/ctxtDY_PATH").text = self.path
-        ClearPath(self.path).clear_path()
+        clear_path(self.path)
         session.findById("wnd[1]/usr/ctxtDY_FILENAME").text = 'data.txt'
         session.findById("wnd[1]/usr/ctxtDY_FILENAME").caretPosition = 5
         session.findById("wnd[1]/tbar[0]/btn[0]").press()
