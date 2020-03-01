@@ -1,3 +1,4 @@
+# sortowanie importow
 import win32com.client
 from win32com import *
 from win32api import *
@@ -43,6 +44,11 @@ def sap_connect():
     return session
 
 
+# Ta metoda ma bardzo generyczną nazwę natomiast odwołujesz sie w niej stricte do indeksów - 8 czy 1.
+# Są to dla mnie magic numbers to magic numbers.
+# można się ich pozbyć poprzez przypisanie go do stałej/zmiennej np.
+# >>> elem = x.split('\t')[1]
+# gdzie elem to deskryptywna nazwa elementu
 def read_from_txt():
     f = open(r'C:\Temp\output\SAP\data.txt', "r")
     lines = f.readlines()

@@ -1,3 +1,4 @@
+# sortowanie importów https://www.python.org/dev/peps/pep-0008/#imports
 from selenium import webdriver
 from json.decoder import JSONDecodeError
 import time
@@ -28,9 +29,12 @@ class ConnectToChrome:
         return driver
 
 
+# Używaj docstringów do modelu zamiast tego typu komentarzy.
+# https://www.python.org/dev/peps/pep-0257/
 # this object is to login to omprompt with given logins and passwords
 class Login:
     def __init__(self, chrome_path, driver_path, site, destination):
+        # Czy chrome_path oraz driver_path będą zmienne? Jeśli nie to podawałbym je jako kwargs.
         self.chrome_path = chrome_path
         self.driver_path = driver_path
         self.site = site
@@ -84,11 +88,13 @@ class DownloadData:
 
 
 # this object is taking log and pass from json file to provide as an input to another object
-
+# Polecam docstring zamiast tego typu komentarza.
 class PickLogin:
+    # brak anotacji typu wejsciowego
     def __init__(self, login_path):
         self.login_path = login_path
 
+    # brak anotacji typu wyjsciowego
     def download_logins(self):
         with open(self.login_path, 'r') as loaded_json:
             data = json.load(loaded_json)
@@ -97,6 +103,20 @@ class PickLogin:
 
 
 def check_if_json_exists():  # if not, then it's creating a new one
+    # W tej chwili używasz JSONDecodeError do sprawdzenia czy plik istnieje - to nie jest dobre rozwiazanie.
+    # Jeśli chcesz bazować na try-except to sugeruje użyć `IOError`.
+    # Natomiast ja polecę libkę pathlib.
+    # >>> from pathlib import Path
+    # >>> Path("fooBar.txt").is_file()
+    # False
+    # >>> with open("fooBar.txt", "w") as f:
+    #     ...
+    #     f.write("fooBar")
+    # ...
+    # 6
+    # >>> Path("fooBar.txt").is_file()
+    # True
+    # >>>
     with open('error_log.json') as error_log:
         try:
             json.loads(error_log.read())
@@ -125,8 +145,11 @@ class LogError:
             except self.log in error_log:
                 pass
 
+    # brak anotacji typów wyjsciowych
     def check_json(self):
         check_if_json_exists()
+        # as `f`, `file` czy `error_log_file` dałbym to zamiast `error_log`
+        # Póżniej tworzysz zmienną z tą samą nazwą wewnątrz context mangagera - to dziala ale raczej to zla praktyka.
         with open('error_log.json') as error_log:
             error_log = json.loads(error_log.read())
         for item in error_log['failure']:

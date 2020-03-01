@@ -1,4 +1,4 @@
-
+# sortowanie importów https://www.python.org/dev/peps/pep-0008/#imports
 import pandas as pd
 import glob
 import os
@@ -13,6 +13,8 @@ class UseDatabase:
         self.line = line
 
     def open_collection(self):
+        # connection url do mongo zdecydowanie powinien być w configu.
+        # dodatkowo czy jest potrzeba tworzenia nowego klienta per request o collection?
         myclient = pymongo.MongoClient("mongodb://localhost:27017/")
         mydb = myclient["newdb"]
         collection = mydb["orders_ompt"]
@@ -29,6 +31,10 @@ def remove_duplicates():
     collection = UseDatabase().open_collection()
     result = collection.find()
     new_list = []
+    # unikaj nazywania x, y - są to niewiadome.
+    # Zerknij też czy nie chciałbyś tu użyć setów - elementy są unikatowe w tej kolekcji.
+    # https://www.w3schools.com/python/python_sets.asp
+    # plus ten AttributeError - raczej to jest do wyrzucenia :D
     for x in result:
         for y in x.values():
             try:
@@ -42,6 +48,8 @@ def remove_duplicates():
     return new_list
 
 
+# utworzyłbym oddzielny skrypt - utils.py i wrzucił tam tą funkcję.
+# takie utilsy są często robione w pythonie - są idealnym miejscem na wrzucenie generycznych funkcji do naszego projektu.
 def clear_path(path):
     items = glob.glob(path + '\\*')
     for item in items:
