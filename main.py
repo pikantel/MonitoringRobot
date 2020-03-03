@@ -1,23 +1,29 @@
+import datetime
+
 from prepare_data import clear_path
 from search_engine import PickLogin, LogError, Login
 from selenium.common.exceptions import NoSuchElementException
+
+from config import *
 from email_handler import EmailCreation
-import datetime
 from sap_download import SapDownload
 
 
 if __name__ == '__main__':
-    chrome_path = r"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe"
-    driver_path = r'C:\Windows\chromedriver.exe'
-    site = 'https://portal1.live.omprompt.com/ompcrm/view/login.csp'
-    login_path = r"C:\python\web_scrap\ompt_partners.json"
-    destination = r"C:\Temp\output\OmptData"
+    chrome_path = robot_credentials["chrome_path"]
+    driver_path = robot_credentials["driver_path"]
+    site = robot_credentials["site"]
+    login_path = robot_credentials["login_path"]
+    destination = robot_credentials["ompt_output"]
     clear_path(destination)
     login = Login(chrome_path, driver_path, site, destination)
     logs = PickLogin(login_path).download_logins()
     for x in logs:
         log = x[0]
         pas = x[1]
+
+        '''Validating logins to receive unified file names'''
+
         if log == "PROCESS CONTROL":
             new_name = "BE_PDC.csv"
         elif log == "PROCESS CONTROL NL":
@@ -30,7 +36,7 @@ if __name__ == '__main__':
         except NoSuchElementException:
             print(f"{log} or {pas} are incorrect, hitting the next one")
             LogError(log, pas).append_to_json()
-            EmailCreation(log, pas, "mikolaj.chrzan@unilever.com").send_email()
+            EmailCreation(log, pas, robot_credentials["email"]).send_email()
             login.close_chrome()
             continue
 
@@ -46,7 +52,7 @@ if __name__ == '__main__':
 
     start_hour = '{:02d}:{:02d}:{:02d}'.format(hours, minutes, now.second)
     finish_hour = '{:02d}:{:02d}:{:02d}'.format(now.hour, now.minute, now.second)
-    path = 'C:\\Temp\\output\\SAP\\'
+    path = robot_credentials["sap_output"]
     sap_connection = SapDownload(date_from, date_to, start_hour, finish_hour, path)
     sap_connection.download_data()
     sap_connection.download_from_edid4()
